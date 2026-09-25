@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terrários Jundiaí — Pequenos mundos. Grandes conexões.</title>
+  <meta name="description" content="Terrários Jundiaí: natureza em miniatura para transformar o seu espaço.">
+  <script>document.documentElement.classList.add("js")</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/fundo - hero.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="inicio" aria-label="Apresentação">
+
+    <!-- Cenário: fundo + terrários pendurados (a pedra e o terrário principal já estão no fundo) -->
+    <div class="hero-scene">
+      <div class="hanger hanger--1" aria-hidden="true">
+        <div class="hanger-drop">
+          <div class="hanger-sway">
+            <img src="assets/terrário pendurado - 1.png" alt="" width="1024" height="1536" decoding="async">
+          </div>
+        </div>
+      </div>
+      <div class="hanger hanger--2" aria-hidden="true">
+        <div class="hanger-drop">
+          <div class="hanger-sway">
+            <img src="assets/terrário pendurado - 2.png" alt="" width="1024" height="1536" decoding="async">
+          </div>
+        </div>
+      </div>
+
+      <p class="hero-side">Natureza<br>também<br>vive<br>dentro<br>de casa</p>
+    </div>
+
+    <header class="site-header">
+      <!-- Identificação textual provisória: não há arquivo de logo na pasta assets -->
+      <a class="brand" href="#inicio" aria-label="Terrários Jundiaí — início">
+        <span class="brand-mark" aria-hidden="true">PD</span>
+        <span class="brand-text">
+          <span class="brand-name">Terrários Jundiaí</span>
+          <span class="brand-sub">por Pedro Dantas</span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Principal">
+        <a href="#colecao" class="is-active">Coleção</a>
+        <a href="#nossa-essencia">Nossa essência</a>
+        <a href="#contato">Contato</a>
+        <span class="nav-leaf" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M19 4C10 4 5 8.5 5 15c0 1.6.4 3 1 4 1-4 4-7.5 8-9.5-3.2 2.4-5.5 5.6-6.4 9.3C8.6 19.6 9.8 20 11 20c6.5 0 9-6 8-16Z" fill="currentColor"/></svg>
+        </span>
+      </nav>
+    </header>
+
+    <div class="hero-content">
+      <p class="eyebrow hero-eyebrow"><span class="rule" aria-hidden="true"></span>Plantas &nbsp;pessoas &nbsp;ambientes melhores</p>
+      <h1 class="hero-title slide-in" style="--d: 0">Pequenos mundos.<br>Grandes conexões.</h1>
+      <p class="hero-lead slide-in" style="--d: 1">Natureza em miniatura para transformar o seu espaço.</p>
+      <a class="btn slide-in" style="--d: 2" href="#colecao">
+        Explore os terrários
+        <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+      </a>
+      <p class="eyebrow hero-foot"><span class="rule" aria-hidden="true"></span>Mais verde<br>para um mundo<br>mais humano</p>
+    </div>
+  </section>
+
+  <!-- ============ COLEÇÃO ============ -->
+  <section class="collection" id="colecao" aria-labelledby="colecao-title">
+    <div class="collection-head">
+      <h2 class="collection-title" id="colecao-title">Escolha o seu universo</h2>
+      <p class="eyebrow collection-note"><span class="rule" aria-hidden="true"></span><span>Diferentes formas<br>de viver o verde</span></p>
+    </div>
+
+    <div class="mosaic">
+      <!-- Cada card: fundo | produto (posição > entrada > flutuação > giro) | título -->
+      <article class="card card--vertical">
+        <div class="card-bg"></div>
+        <div class="product">
+          <div class="product-shadow"></div>
+          <div class="product-enter">
+            <div class="product-float">
+              <div class="product-spin">
+                <img src="assets/terrário vertical.png" alt="Terrário vertical em cilindro de vidro com musgos, samambaias e tronco" width="1024" height="1536" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="card-title">Terrário<br>vertical <span class="card-arrow" aria-hidden="true"></span></h3>
+      </article>
+
+      <article class="card card--aberto">
+        <div class="card-bg"></div>
+        <div class="product">
+          <div class="product-shadow"></div>
+          <div class="product-enter">
+            <div class="product-float">
+              <div class="product-spin">
+                <img src="assets/Terrário aberto.png" alt="Terrário aberto em aquário baixo de vidro com suculentas e tronco" width="1536" height="1024" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="card-title">Terrário<br>aberto <span class="card-arrow" aria-hidden="true"></span></h3>
+      </article>
+
+      <article class="card card--fechado">
+        <div class="card-bg"></div>
+        <div class="product">
+          <div class="product-shadow"></div>
+          <div class="product-enter">
+            <div class="product-float">
+              <div class="product-spin">
+                <img src="assets/Terrário fechado.png" alt="Terrário fechado em pote de vidro com tampa de cortiça" width="1145" height="1374" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="card-title">Terrário<br>fechado <span class="card-arrow" aria-hidden="true"></span></h3>
+      </article>
+
+      <article class="card card--mini">
+        <div class="card-bg"></div>
+        <!--
+          PENDENTE: o PNG isolado dos mini terrários não está na pasta assets.
+          Ao adicioná-lo, descomente o bloco abaixo e ajuste o nome do arquivo, width e height:
+        <div class="product">
+          <div class="product-shadow"></div>
+          <div class="product-enter">
+            <div class="product-float">
+              <div class="product-spin">
+                <img src="assets/NOME-DO-ARQUIVO.png" alt="Conjunto de mini terrários de vidro" width="LARGURA" height="ALTURA" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+        <h3 class="card-title">Mini<br>terrários <span class="card-arrow" aria-hidden="true"></span></h3>
+      </article>
+    </div>
+  </section>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

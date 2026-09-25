@@ -143,6 +143,146 @@
     </div>
   </section>
 
+  <!-- ============ NOSSA ESSÊNCIA ============ -->
+  <section class="essence" id="nossa-essencia" aria-labelledby="essencia-title">
+    <!-- .essence-media: entrada | .essence-photo: zoom leve no hover -->
+    <figure class="essence-media">
+      <img class="essence-photo" src="assets/img seção 3.png" alt="Mãos montando um terrário aberto de vidro com samambaia, fitônia, musgo e pedras, usando uma pinça" width="1024" height="1536" loading="lazy" decoding="async">
+      <figcaption class="essence-caption" aria-hidden="true">Terrários Jundiaí</figcaption>
+    </figure>
+
+    <div class="essence-content">
+      <p class="eyebrow essence-eyebrow reveal-right" style="--i: 0">Nossa essência</p>
+      <h2 class="essence-title reveal-right" style="--i: 1" id="essencia-title">Pequenos detalhes.<br>Uma conexão maior.</h2>
+      <p class="essence-lead reveal-right" style="--i: 2">Um encontro entre natureza, criatividade e cuidado em cada composição.</p>
+      <ul class="essence-list reveal-right" style="--i: 3">
+        <li>Natureza em miniatura <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></li>
+        <li>Cuidado em cada detalhe <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></li>
+        <li>Beleza para o seu espaço <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></li>
+      </ul>
+      <div class="reveal-right" style="--i: 4">
+        <a class="btn essence-btn" href="#colecao">
+          Encontre o seu terrário
+          <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NATUREZA (scroll storytelling) ============
+       A seção é alta; .s4-frame fica fixo (sticky) enquanto o progresso do
+       scroll transforma o terrário: esfera > aberto > vertical > descida.
+       Para acrescentar um estado, basta adicionar outro <img class="s4-shape">
+       e o respectivo item em .s4-steps. -->
+  <section class="s4" id="natureza" aria-labelledby="natureza-title">
+    <div class="s4-frame">
+
+      <!-- Fundo recortado ao quadro. .s4-scene tem a proporção do fundo (cover),
+           então pódio, anel e terrário ficam sempre alinhados à imagem. -->
+      <div class="s4-backdrop">
+        <div class="s4-scene s4-scene--bg">
+          <div class="s4-orbit" aria-hidden="true">
+            <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+              <ellipse cx="500" cy="50" rx="498" ry="48" fill="none" stroke="currentColor" stroke-width="1.1" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <span class="s4-orbit-dot" style="--a: 196deg"></span>
+            <span class="s4-orbit-dot" style="--a: 150deg"></span>
+            <span class="s4-orbit-dot" style="--a: 345deg"></span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="s4-title" id="natureza-title"><span class="s4-title-inner">Natureza.</span></h2>
+
+      <!-- Mesma geometria do fundo, sem recorte: o terrário pode atravessar a borda da seção -->
+      <div class="s4-scene s4-scene--fg">
+        <!-- Camadas: posição > entrada > percurso (scroll) > flutuação > pulso da troca -->
+        <div class="s4-product">
+          <div class="s4-intro">
+            <div class="s4-travel">
+              <div class="s4-float">
+                <div class="s4-stack">
+                  <img class="s4-shape s4-shape--sphere" src="assets/terrário sessão 4.png" alt="Terrário esférico de vidro com samambaia, musgo, tronco e fitônia" width="1254" height="1254" loading="lazy" decoding="async">
+                  <img class="s4-shape s4-shape--aberto" src="assets/Terrário aberto.png" alt="Terrário aberto em aquário baixo de vidro" width="1536" height="1024" loading="lazy" decoding="async">
+                  <img class="s4-shape s4-shape--vertical" src="assets/terrário vertical.png" alt="Terrário vertical em cilindro de vidro" width="1024" height="1536" loading="lazy" decoding="async">
+                  <div class="s4-hotspots" aria-hidden="true">
+                    <span class="s4-hotspot" style="left: 29%; top: 26%"></span>
+                    <span class="s4-hotspot" style="left: 69%; top: 57%"></span>
+                  </div>
+                </div>
+              </div>
+              <!-- sombra de contato: só aparece quando o terrário pousa na mesa da seção seguinte -->
+              <div class="s4-contact" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="s4-copy">
+        <p class="eyebrow s4-eyebrow">Seu próximo pequeno mundo <span class="rule" aria-hidden="true"></span></p>
+        <p class="s4-kicker">Um novo olhar.<br>Em cada ângulo.</p>
+      </div>
+
+      <!-- Etapas: indicam o estado atual e levam até ele ao clicar -->
+      <ol class="s4-steps" aria-label="Formatos do terrário">
+        <li><button type="button" class="s4-step is-active" data-step="0" aria-current="step">
+          <span class="s4-step-dot" aria-hidden="true"></span>
+          <span class="s4-step-thumb" aria-hidden="true"><img src="assets/terrário sessão 4.png" alt="" loading="lazy" decoding="async"></span>
+          <span class="s4-step-label">Sala</span>
+        </button></li>
+        <li><button type="button" class="s4-step" data-step="1">
+          <span class="s4-step-dot" aria-hidden="true"></span>
+          <span class="s4-step-thumb" aria-hidden="true"><img src="assets/Terrário aberto.png" alt="" loading="lazy" decoding="async"></span>
+          <span class="s4-step-label">Escritório</span>
+        </button></li>
+        <li><button type="button" class="s4-step" data-step="2">
+          <span class="s4-step-dot" aria-hidden="true"></span>
+          <span class="s4-step-thumb" aria-hidden="true"><img src="assets/terrário vertical.png" alt="" loading="lazy" decoding="async"></span>
+          <span class="s4-step-label">Leitura</span>
+        </button></li>
+      </ol>
+
+      <p class="s4-counter" aria-hidden="true"><strong class="s4-counter-current">01</strong> / <span class="s4-counter-total">03</span><span class="rule"></span></p>
+
+      <p class="s4-hint" aria-hidden="true"><span class="s4-mouse"></span>Role para explorar</p>
+
+      <a class="btn s4-cta" href="#colecao">
+        Quero no meu espaço
+        <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ ESPAÇOS ============
+       Sem terrário próprio: o terrário que pousa na mesa é o mesmo elemento
+       da seção Natureza, levado até .s5-spot pelo scroll (js/main.js). -->
+  <section class="s5" id="espacos" aria-labelledby="s5-title">
+    <div class="s5-backdrop" aria-hidden="true">
+      <div class="s5-scene">
+        <!-- ponto de pouso sobre a mesa (medido pelo JS; não é visível) -->
+        <span class="s5-spot"></span>
+      </div>
+    </div>
+
+    <div class="s5-content">
+      <p class="eyebrow s5-eyebrow s5-reveal" style="--i: 0">Onde a natureza se adapta a você <span class="rule" aria-hidden="true"></span></p>
+      <h2 class="s5-title s5-reveal" style="--i: 1" id="s5-title">Um pequeno mundo.<br>Para qualquer espaço.</h2>
+      <p class="s5-lead s5-reveal" style="--i: 2">Terrários que se integram ao seu ambiente, trazendo mais vida, equilíbrio e bem-estar para o seu dia a dia.</p>
+      <div class="s5-reveal" style="--i: 3">
+        <a class="btn s5-cta" href="#colecao">
+          Conheça os terrários
+          <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        </a>
+      </div>
+      <ul class="s5-spaces s5-reveal" style="--i: 4" aria-label="Ambientes">
+        <li class="is-active">Sala</li>
+        <li>Escritório</li>
+        <li>Quarto</li>
+        <li>Leitura</li>
+      </ul>
+    </div>
+  </section>
+
   <script src="js/main.js"></script>
 </body>
 </html>

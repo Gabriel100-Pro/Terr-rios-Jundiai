@@ -520,8 +520,615 @@ h1, h2, h3, p { margin: 0; }
 }
 
 /* =========================================================
+   NOSSA ESSÊNCIA
+   ========================================================= */
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+.essence {
+  display: grid;
+  grid-template-columns: 49fr 51fr;
+  align-items: stretch;
+  gap: clamp(32px, 4.8vw, 96px);
+  padding: clamp(48px, 5vw, 96px) 0 0 2.6vw;
+  background: var(--ivory);
+  overflow: hidden;
+}
+
+/* Recorte em arco: canto superior esquerdo amplo, direito ainda mais */
+.essence-media {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+  /* estica até a altura da linha: a foto encosta na base da seção */
+  min-height: clamp(520px, 50vw, 920px);
+  overflow: hidden;
+  border-radius:
+    clamp(110px, 16vw, 300px) clamp(140px, 19vw, 360px) 0 0 /
+    clamp(130px, 17vw, 320px) clamp(170px, 21vw, 400px) 0 0;
+  background: #d9cdb6;
+}
+.essence-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* mantém pinça, mãos e o vaso inteiro no quadro */
+  object-position: 50% 28%;
+  transition: transform 1200ms var(--ease-out);
+}
+.essence-media:hover .essence-photo { transform: scale(1.03); }
+
+.essence-caption {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 3vw, 40px);
+  translate: -50% 0;
+  color: rgba(24, 35, 26, .78);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(241, 235, 223, .7);
+  white-space: nowrap;
+}
+.essence-caption::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 1px;
+  margin: 12px auto 0;
+  background: currentColor;
+  opacity: .7;
+}
+
+.essence-content {
+  align-self: center;
+  min-width: 0;
+  padding: clamp(24px, 3vw, 56px) max(4vw, 24px) clamp(48px, 6vw, 110px) 0;
+  color: var(--green-900);
+}
+
+.essence-eyebrow { font-size: 10px; letter-spacing: .42em; }
+
+.essence-title {
+  margin-top: clamp(20px, 2.2vw, 36px);
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(40px, 5.4vw, 104px);
+  line-height: .98;
+  letter-spacing: -.02em;
+}
+
+.essence-lead {
+  margin-top: clamp(20px, 2.2vw, 36px);
+  max-width: 42ch;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(19px, 1.75vw, 32px);
+  line-height: 1.35;
+  letter-spacing: .01em;
+}
+
+.essence-list {
+  list-style: none;
+  margin: clamp(24px, 2.6vw, 44px) 0 0;
+  padding: 0;
+  max-width: 700px;
+}
+.essence-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(14px, 1.35vw, 22px) clamp(8px, .9vw, 16px);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(18px, 1.55vw, 28px);
+  line-height: 1.2;
+}
+.essence-list li + li { border-top: 1px solid rgba(24, 35, 26, .28); }
+.essence-list .arrow { flex: none; width: 24px; height: 12px; opacity: .85; }
+
+.essence-btn { margin-top: clamp(24px, 2.6vw, 44px); padding: 0 clamp(28px, 2.8vw, 48px); letter-spacing: .04em; }
+
+/* ---- Entrada ------------------------------------------------------ */
+.js .essence-media {
+  opacity: 0;
+  transform: translate3d(-40px, 0, 0);
+  transition: opacity 1000ms var(--ease-out), transform 1000ms var(--ease-out);
+}
+.js .reveal-right {
+  opacity: 0;
+  transform: translate3d(40px, 0, 0);
+  transition: opacity 850ms var(--ease-out), transform 850ms var(--ease-out);
+  transition-delay: calc(250ms + var(--i, 0) * 130ms);
+}
+.essence.is-in .essence-media,
+.essence.is-in .reveal-right { opacity: 1; transform: none; }
+
+/* =========================================================
+   NATUREZA — scroll storytelling
+   A seção é alta; .s4-frame fica preso (sticky) enquanto o JS
+   converte o progresso do scroll em transformações do terrário.
+   ========================================================= */
+
+@property --s4-float-amp {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 9px;
+}
+
+@property --s4-spin {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.s4 {
+  --s4-green: #2b3d26;
+  --s4-ink: #2c3128;
+  --s4-ratio: 1.7757;              /* proporção de "fundo sessão 4.png" (1671 × 941) */
+  position: relative;
+  z-index: 1;                      /* o terrário pode cruzar para a seção seguinte */
+  height: 420vh;                   /* quadro fixo + percurso da história */
+  background: #efe7da;
+  overflow-x: clip;
+}
+
+.s4-frame {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+}
+
+.s4-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Caixa com a proporção do fundo, cobrindo o quadro (como background-size: cover) */
+.s4-scene {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 100svh * var(--s4-ratio));
+  aspect-ratio: 1671 / 941;
+  transform: translate(-50%, -50%);
+}
+.s4-scene--bg { background: url("../assets/fundo sessão 4.png") center / 100% 100% no-repeat; }
+.s4-scene--fg { z-index: 2; pointer-events: none; }
+
+/* ---- Anel orbital sobre o pódio ------------------------------------ */
+.s4-orbit {
+  position: absolute;
+  left: 50%;
+  top: 74%;
+  width: 58%;
+  height: 8.5%;
+  transform: translate(-50%, -50%);
+  color: rgba(43, 61, 38, .7);
+  container-type: size;
+}
+.s4-orbit svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.s4-orbit-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: var(--s4-green);
+  box-shadow: 0 0 0 4px rgba(239, 231, 218, .55);
+  transform: translate(
+    calc(cos(var(--a) + var(--s4-spin)) * 50cqw),
+    calc(sin(var(--a) + var(--s4-spin)) * 50cqh)
+  );
+  animation: s4-orbit 90s linear infinite;
+}
+@keyframes s4-orbit { to { --s4-spin: 360deg; } }
+
+/* ---- Título gigante (atrás do terrário) ------------------------------ */
+.s4-title {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 8.5%;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: min(19vw, 33svh);
+  line-height: .9;
+  letter-spacing: -.035em;
+  color: var(--s4-green);
+  white-space: nowrap;
+  translate: -46% 0;
+}
+.s4-title-inner { display: block; will-change: transform, opacity; }
+
+/* ---- Terrário: camadas independentes ------------------------------- */
+.s4-product {
+  position: absolute;
+  left: 50%;
+  top: 45.7%;
+  /* esfera: área visível ≈ 55% da altura do cenário (o PNG tem 82% de área útil) */
+  width: min(38%, 92vw, 74svh);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+.s4-intro,
+.s4-travel,
+.s4-float,
+.s4-stack { position: absolute; inset: 0; }
+
+/* Sem will-change em .s4-travel: essa camada chega a ficar a mais de uma
+   tela de distância do quadro fixo (pouso na seção seguinte), e o Chrome
+   deixava de desenhá-la quando promovida a camada própria. */
+.s4-stack,
+.s4-shape { will-change: transform, opacity; }
+
+.s4-float {
+  animation: s4-float 7s ease-in-out infinite;
+  transition: --s4-float-amp 1400ms var(--ease-out);
+}
+/* Pousado na mesa da seção seguinte: a flutuação se apaga suavemente */
+.s4.is-landed .s4-float { --s4-float-amp: 0px; }
+@keyframes s4-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, calc(var(--s4-float-amp) * -1), 0); }
+}
+
+.s4-contact {
+  position: absolute;
+  left: 15%;
+  top: 87%;
+  width: 70%;
+  height: 11%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(58, 40, 18, .38), rgba(58, 40, 18, .12) 60%, rgba(58, 40, 18, 0));
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Cada formato é centralizado no mesmo ponto; tamanhos ajustados para a
+   mesma presença visual (medidos pela área útil de cada PNG). */
+.s4-shape {
+  position: absolute;
+  width: var(--w);
+  height: var(--h);
+  left: calc(50% - var(--w) / 2);
+  top: calc(50% - var(--h) / 2);
+  filter: drop-shadow(0 30px 28px rgba(70, 50, 25, .18));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.s4-shape--sphere   { --w: 100%; --h: 100%; }
+.s4-shape--aberto   { --w: 108%; --h: 72%; }
+.s4-shape--vertical { --w: 61%;  --h: 91.5%; }
+.js .s4-shape:not(.s4-shape--sphere) { opacity: 0; }
+
+.s4-hotspots { position: absolute; inset: 0; pointer-events: none; }
+.s4-hotspot {
+  position: absolute;
+  width: clamp(26px, 2.3vw, 38px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: rgba(250, 247, 240, .92);
+  box-shadow: 0 4px 14px rgba(40, 30, 15, .18);
+}
+.s4-hotspot::before,
+.s4-hotspot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 38%;
+  height: 1.5px;
+  background: var(--s4-green);
+  translate: -50% -50%;
+}
+.s4-hotspot::after { rotate: 90deg; }
+
+/* ---- Textos e interface ------------------------------------------ */
+.s4-copy {
+  position: absolute;
+  z-index: 3;
+  left: 5.3vw;
+  top: 9.5%;
+  color: var(--s4-ink);
+}
+.s4-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 9px; letter-spacing: .3em; }
+.s4-eyebrow .rule { width: 52px; opacity: .5; }
+.s4-kicker {
+  margin-top: 16px;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(24px, 2.35vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -.01em;
+}
+
+.s4-steps {
+  position: absolute;
+  z-index: 3;
+  right: 3vw;
+  top: 50%;
+  translate: 0 -50%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 4.5svh, 44px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* linha vertical que conecta os pontos */
+.s4-steps::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 34px;
+  bottom: 34px;
+  width: 1px;
+  background: rgba(43, 61, 38, .3);
+}
+.s4-step {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.6vw, 28px);
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--s4-ink);
+  cursor: pointer;
+  text-align: left;
+}
+.s4-step-dot {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #c9c1b1;
+  transition: background-color .5s ease, transform .5s var(--ease-out);
+}
+.s4-step-thumb {
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 4.3vw, 76px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(250, 246, 238, .78);
+  box-shadow: 0 0 0 1px rgba(43, 61, 38, .12), 0 8px 20px rgba(60, 45, 25, .12);
+  transition: box-shadow .5s ease, transform .5s var(--ease-out);
+}
+.s4-step-thumb img { width: 82%; height: 82%; object-fit: contain; }
+.s4-step-label {
+  min-width: 6.5em;
+  font-size: 14px;
+  font-weight: 300;
+  opacity: .7;
+  transition: opacity .5s ease;
+}
+.s4-step.is-active .s4-step-dot { background: var(--s4-green); transform: scale(1.15); }
+.s4-step.is-active .s4-step-thumb { box-shadow: 0 0 0 2px rgba(43, 61, 38, .55), 0 10px 24px rgba(60, 45, 25, .16); transform: scale(1.05); }
+.s4-step.is-active .s4-step-label { opacity: 1; font-weight: 400; }
+.s4-step:hover .s4-step-label { opacity: 1; }
+.s4-step:focus-visible { outline: 2px solid var(--s4-green); outline-offset: 6px; border-radius: 40px; }
+
+.s4-counter {
+  position: absolute;
+  z-index: 3;
+  left: 5.3vw;
+  bottom: 7.5%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--s4-ink);
+}
+.s4-counter strong { font-weight: 400; }
+.s4-counter .rule { width: 64px; margin-left: 12px; opacity: .35; }
+
+.s4-hint {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 8%;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--s4-ink);
+  transition: opacity .6s ease;
+}
+.s4-mouse {
+  position: relative;
+  width: 22px;
+  height: 34px;
+  border: 1.3px solid currentColor;
+  border-radius: 12px;
+  opacity: .8;
+}
+.s4-mouse::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  width: 2px;
+  height: 7px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: currentColor;
+  animation: s4-wheel 1.8s ease-in-out infinite;
+}
+@keyframes s4-wheel {
+  0%   { transform: translateY(0); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translateY(9px); opacity: 0; }
+}
+.s4.is-scrolled .s4-hint { opacity: 0; }
+
+.s4-cta {
+  position: absolute;
+  z-index: 3;
+  right: 3.2vw;
+  bottom: 6.2%;
+  margin: 0;
+  background: #25331f;
+}
+.s4-cta:hover { background: var(--green-700); }
+
+/* ---- Entrada (antes de fixar) ------------------------------------ */
+.js .s4-copy,
+.js .s4-steps,
+.js .s4-counter,
+.js .s4-cta,
+.js .s4-hint {
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+}
+.js .s4-copy    { transform: translate3d(-40px, 0, 0); }
+.js .s4-steps   { transform: translate3d(40px, 0, 0); transition-delay: 150ms; }
+.js .s4-counter,
+.js .s4-cta     { transition-delay: 300ms; }
+.js .s4-intro {
+  opacity: 0;
+  transform: translate3d(0, 50px, 0) scale(.94);
+  transition: opacity 1200ms var(--ease-out), transform 1400ms var(--ease-out);
+}
+.js .s4-title {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition: opacity 1400ms var(--ease-out), transform 1400ms var(--ease-out);
+}
+.s4.is-in .s4-copy,
+.s4.is-in .s4-steps,
+.s4.is-in .s4-counter,
+.s4.is-in .s4-cta,
+.s4.is-in .s4-hint,
+.s4.is-in .s4-intro,
+.s4.is-in .s4-title { opacity: 1; transform: none; }
+.s4.is-in.is-scrolled .s4-hint { opacity: 0; }
+
+/* =========================================================
+   ESPAÇOS (seção 5)
+   Sem terrário próprio: o da seção Natureza pousa em .s5-spot.
+   ========================================================= */
+
+.s5 {
+  --s5-green: #2b3d26;
+  position: relative;
+  z-index: 0;                       /* abaixo da seção Natureza: o terrário passa por cima */
+  height: 100vh;
+  height: 100svh;
+  min-height: 560px;
+  background: #ede3d2;
+}
+
+.s5-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+/* Caixa com a proporção de "fundo seção 5.png" cobrindo a seção (cover);
+   o ponto de pouso é posicionado nas coordenadas da própria imagem. */
+.s5-scene {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 100svh * 1.7757);
+  aspect-ratio: 1671 / 941;
+  transform: translate(-50%, -50%);
+  background: url("../assets/fundo seção 5.png") center / 100% 100% no-repeat;
+}
+.s5-spot {
+  position: absolute;
+  left: var(--spot-x, 64%);          /* centro do tampo da mesa */
+  top: var(--spot-y, 76.5%);         /* base do terrário sobre o tampo */
+  width: var(--spot-w, 22%);         /* largura visível do terrário pousado */
+  height: 0;
+  translate: -50% 0;
+}
+
+.s5-content {
+  position: absolute;
+  z-index: 1;
+  left: 6.3vw;
+  top: 17%;
+  max-width: min(44vw, 640px);
+  color: var(--s5-green);
+}
+.s5-eyebrow { display: flex; align-items: center; gap: 14px; font-size: 10px; letter-spacing: .34em; color: #4a4a3e; }
+.s5-eyebrow .rule { width: 64px; opacity: .45; }
+.s5-title {
+  margin-top: clamp(22px, 3.2svh, 40px);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(38px, 3.85vw, 78px);
+  line-height: 1.08;
+  letter-spacing: -.01em;
+}
+.s5-lead {
+  margin-top: clamp(22px, 4svh, 44px);
+  max-width: 25em;
+  font-size: clamp(16px, 1.12vw, 21px);
+  font-weight: 300;
+  line-height: 1.45;
+  color: #3d3d33;
+}
+.s5-cta { margin-top: clamp(26px, 6svh, 64px); background: #26351f; }
+.s5-spaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px clamp(26px, 2.6vw, 44px);
+  margin: clamp(40px, 11svh, 116px) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 300;
+  color: #6d695c;
+}
+.s5-spaces li { display: flex; align-items: center; gap: 12px; }
+.s5-spaces li::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #a9a393;
+}
+.s5-spaces li.is-active { color: var(--s5-green); font-weight: 400; }
+.s5-spaces li.is-active::before { background: var(--s5-green); }
+
+/* Entrada: só o texto; o fundo fica estável e o terrário chega pelo scroll */
+.js .s5-reveal {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition: opacity 1000ms var(--ease-out), transform 1000ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 120ms);
+}
+.s5.is-in .s5-reveal { opacity: 1; transform: none; }
+
+/* =========================================================
    RESPONSIVO
    ========================================================= */
+
+/* Natureza em paisagem mais estreita (ex.: 1024 × 768): título e terrário menores */
+@media (max-aspect-ratio: 3/2) and (orientation: landscape), (max-width: 1100px) and (orientation: landscape) {
+  .s4-title { font-size: min(14.5vw, 22svh); translate: -44% 0; }
+  .s4-product { top: 50%; width: min(34%, 64svh); }
+}
 
 /* Tablet e celular: hero empilhada (texto em cima, cenário embaixo) */
 @media (max-width: 1100px) {
@@ -580,6 +1187,78 @@ h1, h2, h3, p { margin: 0; }
   .card--aberto, .card--fechado { aspect-ratio: 4 / 3; }
 }
 
+@media (max-width: 860px) {
+  /* Nossa essência: foto em cima, conteúdo embaixo */
+  .essence {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 48px 16px 64px;
+  }
+  .essence-media {
+    min-height: clamp(420px, 118vw, 720px);
+    border-radius: 42vw 46vw 0 0 / 30vw 34vw 0 0;
+  }
+  .essence-photo { object-position: 50% 36%; }
+  .essence-content { padding: 0 4px; }
+  .essence-title { font-size: clamp(38px, 10.2vw, 72px); }
+  .essence-list { max-width: none; }
+}
+
+/* Espaços em retrato: texto em cima, mesa e terrário embaixo.
+   O cenário é deslocado para a mesa ficar à direita do centro. */
+@media (max-width: 760px), (max-width: 1100px) and (orientation: portrait) {
+  .s5 { min-height: 700px; }
+  .s5-scene { left: 0; transform: translate(calc(56vw - 64%), -50%); }
+  .s5-backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 64%;
+    background: linear-gradient(180deg, rgba(237, 227, 210, .94) 0%, rgba(237, 227, 210, .86) 62%, rgba(237, 227, 210, 0) 100%);
+  }
+  .s5-spot { --spot-w: min(19%, 64vw); --spot-y: 77%; }
+  .s5-content { left: 20px; right: 20px; top: calc(28px + 3svh); max-width: none; }
+  .s5-title { font-size: clamp(34px, 9.2vw, 60px); margin-top: 18px; }
+  .s5-lead { margin-top: 16px; font-size: 16px; }
+  .s5-cta { margin-top: 22px; }
+  .s5-spaces { margin-top: 26px; gap: 10px 22px; font-size: 14px; }
+}
+@media (max-width: 480px) {
+  .s5-eyebrow .rule { display: none; }
+}
+
+/* Natureza no celular e tablet em retrato: título abaixo do texto,
+   etapas em linha acima do rodapé da seção */
+@media (max-width: 760px), (max-width: 1100px) and (orientation: portrait) {
+  .s4 { height: 340vh; }
+  .s4-copy { left: 20px; top: calc(16px + 3svh); }
+  .s4-kicker { font-size: clamp(22px, 6.4vw, 30px); margin-top: 12px; }
+  .s4-title { top: calc(3svh + 110px); translate: -50% 0; font-size: min(23vw, 20svh); }
+  .s4-product { top: 51%; width: min(92vw, 44svh); }
+  .s4-orbit { width: min(58%, 104vw); top: 72%; }
+  .s4-orbit-dot { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; }
+
+  .s4-steps {
+    top: auto;
+    right: auto;
+    left: 50%;
+    bottom: calc(84px + 2svh);
+    translate: -50% 0;
+    flex-direction: row;
+    gap: 22px;
+  }
+  .s4-steps::before { display: none; }
+  .s4-step { flex-direction: column; gap: 6px; }
+  .s4-step-dot { display: none; }
+  .s4-step-thumb { width: 50px; }
+  .s4-step-label { min-width: 0; font-size: 12px; text-align: center; }
+
+  .s4-hint { display: none; }
+  .s4-counter { left: 20px; bottom: 34px; font-size: 14px; }
+  .s4-counter .rule { display: none; }
+  .s4-cta { right: 20px; bottom: 22px; padding: 0 22px; font-size: 14px; }
+}
+
 @media (max-width: 560px) {
   .site-header { flex-wrap: wrap; row-gap: 14px; }
   .site-nav { width: 100%; justify-content: space-between; gap: 8px; }
@@ -619,7 +1298,9 @@ h1, h2, h3, p { margin: 0; }
   .js .card-bg,
   .js .card-title,
   .js .product-enter,
-  .js .product-shadow {
+  .js .product-shadow,
+  .js .essence-media,
+  .js .reveal-right {
     transition: none;
     opacity: 1;
     transform: none;
@@ -628,4 +1309,17 @@ h1, h2, h3, p { margin: 0; }
   .card.is-floating .product-float,
   .card.is-floating .product-shadow,
   .product-spin.is-spinning { animation: none; }
+  .essence-photo { transition: none; }
+  .s4-float,
+  .s4-orbit-dot,
+  .s4-mouse::after { animation: none; }
+  .js .s4-copy,
+  .js .s4-steps,
+  .js .s4-counter,
+  .js .s4-cta,
+  .js .s4-hint,
+  .js .s4-intro,
+  .js .s4-title,
+  .js .s5-reveal { transition: none; opacity: 1; transform: none; }
+  .essence-media:hover .essence-photo { transform: none; }
 }

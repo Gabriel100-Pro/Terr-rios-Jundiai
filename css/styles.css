@@ -15,11 +15,15 @@
   --sans: "Jost", "Helvetica Neue", Arial, sans-serif;
 
   --pad-x: clamp(20px, 6.8vw, 120px);
-  --hero-h: clamp(440px, 34.5vw, 900px);
+  --vh: 100vh;
+  /* altura aproximada do header (padding superior + marca), para liberar espaço abaixo dele */
+  --hdr-h: calc(clamp(16px, 1.6vw, 28px) + clamp(44px, 3.9vw, 64px));
 
   --ease-out: cubic-bezier(.22, .61, .36, 1);
   --ease-soft: cubic-bezier(.16, 1, .3, 1);
 }
+
+@supports (height: 100svh) { :root { --vh: 100svh; } }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -47,6 +51,17 @@ h1, h2, h3, p { margin: 0; }
   line-height: 1.55;
   text-transform: uppercase;
 }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
 .rule {
   display: block;
   width: 28px;
@@ -59,21 +74,53 @@ h1, h2, h3, p { margin: 0; }
    HERO
    ========================================================= */
 
+/* Primeira tela inteira: largura total e altura da viewport (svh no celular).
+   O header fica por cima da imagem, sem faixa própria. */
 .hero {
   position: relative;
-  height: var(--hero-h);
+  width: 100%;
+  height: var(--vh);
+  min-height: 600px;
   overflow: hidden;
   background: var(--ivory-2);
 }
 
-/* Cenário: o terrário principal e a pedra já fazem parte da imagem.
-   background-position-x = 62% mantém o terrário do fundo a 62% da largura. */
+/* Cenário: o terrário principal e a pedra já fazem parte da imagem
+   ("fundo - hero.png", 2172 × 724, proporção 3:1). O cenário é um container,
+   então as medidas abaixo usam o tamanho real dele (cqw/cqh):
+     --img-h   altura em que a imagem é desenhada (equivale a cover)
+     --bowl-c  onde queremos o centro do terrário do fundo
+     --bg-x    deslocamento horizontal da imagem, limitado para nunca sobrar borda
+     --bowl-x  onde o centro do terrário realmente fica
+   Na imagem, o terrário ocupa de 50,25% a 74,5% da largura: centro em
+   1,866 × altura e meia largura de 0,364 × altura. */
 .hero-scene {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden; /* o cordão sempre nasce na borda superior do cenário */
-  background: url("../assets/fundo - hero.png") 62% 50% / cover no-repeat;
+  container-type: size;
+  --img-h: max(100cqh, 100cqw / 3);
+  /* à direita da área de leitura (margem + largura do título), sem sair da tela */
+  --bowl-c: clamp(62cqw, var(--pad-x) + 36cqw + .364 * var(--img-h), 100cqw - .364 * var(--img-h) - 8px);
+  --bg-x: max(100cqw - 3 * var(--img-h), min(0px, var(--bowl-c) - 1.866 * var(--img-h)));
+  --bowl-x: calc(var(--bg-x) + 1.866 * var(--img-h));
+}
+/* Em tela cheia a imagem é ampliada e a parede clara fica estreita: um véu
+   marfim suave à esquerda prolonga a área de leitura e some antes do terrário. */
+.hero-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg,
+      rgba(239, 230, 215, .9) 0,
+      rgba(239, 230, 215, .78) calc(var(--pad-x) + 30cqw),
+      rgba(239, 230, 215, 0) calc(var(--bowl-x) - .3 * var(--img-h))),
+    url("../assets/fundo - hero.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%, auto var(--img-h);
+  background-position: 0 0, var(--bg-x) 50%;
 }
 
 /* ---- Terrários pendurados -------------------------------------------
@@ -87,9 +134,10 @@ h1, h2, h3, p { margin: 0; }
   z-index: 1;
   pointer-events: none;
 }
-/* No desktop, o JS alinha os cordões aos vãos da navegação (--cord-x). */
-.hanger--1 { left: var(--cord-x, 79.5%); top: -9%; height: 60%; }
-.hanger--2 { left: var(--cord-x, 89.5%); top: 0;   height: 70%; }
+/* No desktop, o JS alinha os cordões aos vãos da navegação (--cord-x).
+   Tamanho proporcional à imagem do fundo, como na composição original. */
+.hanger--1 { left: var(--cord-x, 79.5%); top: -8%; height: min(60%, var(--img-h) * .4); }
+.hanger--2 { left: var(--cord-x, 89.5%); top: 0;   height: min(70%, var(--img-h) * .47); }
 
 .hanger-drop,
 .hanger-sway,
@@ -117,8 +165,8 @@ h1, h2, h3, p { margin: 0; }
 
 .hero-side {
   position: absolute;
-  /* logo à direita da borda do terrário do fundo (metade da largura dele = 0,3675 × altura) */
-  left: calc(62% + var(--hero-h) * .3675 + 14px);
+  /* logo à direita da borda do terrário do fundo, sem sair da tela */
+  left: min(var(--bowl-x) + .364 * var(--img-h) + 14px, 100cqw - 118px);
   top: 65%;
   z-index: 2;
   color: var(--cream-text);
@@ -227,7 +275,8 @@ h1, h2, h3, p { margin: 0; }
   position: absolute;
   z-index: 2;
   left: var(--pad-x);
-  top: calc(var(--hero-h) * .245);
+  /* centrado na altura, sempre abaixo do header */
+  top: max(var(--hdr-h) + 40px, 50% - 250px);
   max-width: 46%;
 }
 
@@ -651,9 +700,107 @@ h1, h2, h3, p { margin: 0; }
 .essence.is-in .reveal-right { opacity: 1; transform: none; }
 
 /* =========================================================
+   INDICADORES (abaixo de Nossa essência)
+   Fundo branco, números em verde-grama, rótulos em verde-escuro.
+   ========================================================= */
+
+.stats {
+  --stat-number: #388e3c;
+  background: #fff;
+  color: var(--green-900);
+  padding: clamp(56px, 7vw, 120px) var(--pad-x);
+}
+.stats-list {
+  display: grid;
+  /* uma coluna igual por indicador, lado a lado */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+.stat {
+  min-width: 0;
+  padding: 8px clamp(16px, 2.4vw, 44px);
+  text-align: center;
+}
+/* divisória discreta entre indicadores */
+.stat + .stat { border-left: 1px solid rgba(31, 43, 31, .12); }
+
+.stat-value {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(52px, 5.6vw, 104px);
+  line-height: 1;
+  letter-spacing: -.01em;
+  color: var(--stat-number);
+  font-variant-numeric: lining-nums tabular-nums; /* dígitos de largura igual: nada se move na contagem */
+}
+/* O valor final (invisível) reserva a largura; a contagem é desenhada por cima. */
+.stat-number { display: inline-grid; justify-items: end; }
+.stat-ghost,
+.stat-live { grid-area: 1 / 1; }
+.stat-ghost { visibility: hidden; }
+.stat-suffix { margin-left: .04em; }
+
+.stat-label {
+  margin-top: clamp(12px, 1.2vw, 18px);
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 400;
+  letter-spacing: .06em;
+  line-height: 1.35;
+  color: var(--green-800);
+}
+/* Selo de desenvolvimento: some quando o item deixa de ser ilustrativo */
+.stat[data-illustrative] .stat-label::after {
+  content: "Valor ilustrativo";
+  display: block;
+  width: fit-content;
+  margin: 10px auto 0;
+  padding: 2px 9px;
+  border: 1px dashed rgba(56, 142, 60, .55);
+  border-radius: 999px;
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #4d7a50;
+}
+
+/* Celular: duas colunas, divisórias só entre as colunas */
+@media (max-width: 700px) {
+  .stats-list {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: row;
+    row-gap: 40px;
+  }
+  .stat { padding: 4px 10px; }
+  .stat + .stat { border-left: 0; }
+  .stat:nth-child(2n) { border-left: 1px solid rgba(31, 43, 31, .12); }
+}
+
+/* =========================================================
+   PÁGINA NOSSA NATUREZA
+   Header por cima da seção Natureza (fundo claro: navegação em verde).
+   ========================================================= */
+
+.site-header--overlay { position: absolute; z-index: 5; }
+.site-header--overlay .site-nav { color: var(--green-900); }
+.site-header--overlay .site-nav a { text-shadow: none; }
+.site-header--overlay .nav-leaf { border-color: rgba(24, 35, 26, .45); }
+
+/* Contêiner das seções Natureza e Espaços: o terrário viaja dentro dele
+   e nunca é desenhado fora (header, rodapé ou outras áreas). */
+.journey { position: relative; overflow: hidden; }
+@supports (overflow: clip) { .journey { overflow: clip; } }
+
+/* =========================================================
    NATUREZA — scroll storytelling
    A seção é alta; .s4-frame fica preso (sticky) enquanto o JS
-   converte o progresso do scroll em transformações do terrário.
+   converte o progresso do scroll no percurso do terrário.
    ========================================================= */
 
 @property --s4-float-amp {
@@ -674,7 +821,7 @@ h1, h2, h3, p { margin: 0; }
   --s4-ratio: 1.7757;              /* proporção de "fundo sessão 4.png" (1671 × 941) */
   position: relative;
   z-index: 1;                      /* o terrário pode cruzar para a seção seguinte */
-  height: 420vh;                   /* quadro fixo + percurso da história */
+  height: 560vh;                   /* quadro fixo: 5 modelos + pausa + descida */
   background: #efe7da;
   overflow-x: clip;
 }
@@ -739,7 +886,7 @@ h1, h2, h3, p { margin: 0; }
   position: absolute;
   z-index: 1;
   left: 50%;
-  top: 8.5%;
+  top: max(8.5%, var(--hdr-h) + 14px);
   margin: 0;
   font-family: var(--serif);
   font-weight: 600;
@@ -764,14 +911,11 @@ h1, h2, h3, p { margin: 0; }
 }
 .s4-intro,
 .s4-travel,
-.s4-float,
-.s4-stack { position: absolute; inset: 0; }
+.s4-float { position: absolute; inset: 0; }
 
 /* Sem will-change em .s4-travel: essa camada chega a ficar a mais de uma
    tela de distância do quadro fixo (pouso na seção seguinte), e o Chrome
    deixava de desenhá-la quando promovida a camada própria. */
-.s4-stack,
-.s4-shape { will-change: transform, opacity; }
 
 .s4-float {
   animation: s4-float 7s ease-in-out infinite;
@@ -796,9 +940,12 @@ h1, h2, h3, p { margin: 0; }
   pointer-events: none;
 }
 
-/* Cada formato é centralizado no mesmo ponto; tamanhos ajustados para a
-   mesma presença visual (medidos pela área útil de cada PNG). */
-.s4-shape {
+/* Modelos sobrepostos no mesmo centro; o JS mostra um por vez conforme o
+   scroll. Tamanhos individuais (pela área útil de cada PNG), sempre dentro da
+   caixa do produto, para cada modelo aparecer inteiro e com presença parecida.
+   A caixa tem o tamanho da esfera (o último modelo, que desce para a mesa). */
+.s4-stack { position: absolute; inset: 0; will-change: transform; }
+.s4-model {
   position: absolute;
   width: var(--w);
   height: var(--h);
@@ -807,41 +954,22 @@ h1, h2, h3, p { margin: 0; }
   filter: drop-shadow(0 30px 28px rgba(70, 50, 25, .18));
   user-select: none;
   -webkit-user-drag: none;
+  will-change: transform, opacity;
 }
-.s4-shape--sphere   { --w: 100%; --h: 100%; }
-.s4-shape--aberto   { --w: 108%; --h: 72%; }
-.s4-shape--vertical { --w: 61%;  --h: 91.5%; }
-.js .s4-shape:not(.s4-shape--sphere) { opacity: 0; }
-
-.s4-hotspots { position: absolute; inset: 0; pointer-events: none; }
-.s4-hotspot {
-  position: absolute;
-  width: clamp(26px, 2.3vw, 38px);
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: rgba(250, 247, 240, .92);
-  box-shadow: 0 4px 14px rgba(40, 30, 15, .18);
-}
-.s4-hotspot::before,
-.s4-hotspot::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 38%;
-  height: 1.5px;
-  background: var(--s4-green);
-  translate: -50% -50%;
-}
-.s4-hotspot::after { rotate: 90deg; }
+.s4-model--vertical { --w: 60%;  --h: 90%; }
+.s4-model--aberto   { --w: 104%; --h: 69.3%; }
+.s4-model--fechado  { --w: 72%;  --h: 86.4%; }
+.s4-model--mini     { --w: 106%; --h: 70.7%; }
+.s4-model--destaque { --w: 100%; --h: 100%; }
+/* Antes do JS assumir: só o primeiro modelo; a esfera nunca pisca na abertura */
+.js .s4-model:not(.s4-model--vertical) { opacity: 0; }
 
 /* ---- Textos e interface ------------------------------------------ */
 .s4-copy {
   position: absolute;
   z-index: 3;
   left: 5.3vw;
-  top: 9.5%;
+  top: max(9.5%, var(--hdr-h) + 34px);
   color: var(--s4-ink);
 }
 .s4-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 9px; letter-spacing: .3em; }
@@ -859,11 +987,12 @@ h1, h2, h3, p { margin: 0; }
   position: absolute;
   z-index: 3;
   right: 3vw;
-  top: 50%;
+  /* abaixo do título, centrada na metade inferior do quadro (4 opções) */
+  top: 57%;
   translate: 0 -50%;
   display: flex;
   flex-direction: column;
-  gap: clamp(22px, 4.5svh, 44px);
+  gap: clamp(8px, 1.9svh, 26px);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -901,7 +1030,7 @@ h1, h2, h3, p { margin: 0; }
 .s4-step-thumb {
   display: grid;
   place-items: center;
-  width: clamp(56px, 4.3vw, 76px);
+  width: clamp(46px, 3.6vw, 64px);
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
@@ -912,9 +1041,12 @@ h1, h2, h3, p { margin: 0; }
 .s4-step-thumb img { width: 82%; height: 82%; object-fit: contain; }
 .s4-step-label {
   min-width: 6.5em;
+  max-width: 8.5em;
   font-size: 14px;
   font-weight: 300;
-  opacity: .7;
+  opacity: .82;
+  /* halo claro: legível sobre a pedra e o pódio do fundo */
+  text-shadow: 0 0 6px rgba(250, 246, 238, .95), 0 0 14px rgba(250, 246, 238, .8);
   transition: opacity .5s ease;
 }
 .s4-step.is-active .s4-step-dot { background: var(--s4-green); transform: scale(1.15); }
@@ -990,37 +1122,44 @@ h1, h2, h3, p { margin: 0; }
 }
 .s4-cta:hover { background: var(--green-700); }
 
-/* ---- Entrada (antes de fixar) ------------------------------------ */
-.js .s4-copy,
+/* ---- Abertura (em ordem, classes aplicadas pelo JS) ----------------
+   1. is-bg-in   fundo e cenário
+   2. is-text-in títulos e textos
+   3. is-ui-in   controles e demais elementos
+   4. is-in      por último, o terrário (já carregado) */
+.js .s4-backdrop { opacity: 0; transition: opacity 700ms var(--ease-out); }
+.js .s4-title,
+.js .s4-copy {
+  opacity: 0;
+  transition: opacity 800ms var(--ease-out), transform 800ms var(--ease-out);
+}
+.js .s4-title { transform: translate3d(0, 24px, 0); }
+.js .s4-copy  { transform: translate3d(-30px, 0, 0); transition-delay: 100ms; }
 .js .s4-steps,
 .js .s4-counter,
 .js .s4-cta,
 .js .s4-hint {
   opacity: 0;
-  transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+  transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
 }
-.js .s4-copy    { transform: translate3d(-40px, 0, 0); }
-.js .s4-steps   { transform: translate3d(40px, 0, 0); transition-delay: 150ms; }
+.js .s4-steps   { transform: translate3d(30px, 0, 0); }
 .js .s4-counter,
-.js .s4-cta     { transition-delay: 300ms; }
+.js .s4-cta     { transition-delay: 100ms; }
+/* O terrário: só opacidade e leve subida; o percurso do scroll fica em .s4-travel */
 .js .s4-intro {
   opacity: 0;
-  transform: translate3d(0, 50px, 0) scale(.94);
-  transition: opacity 1200ms var(--ease-out), transform 1400ms var(--ease-out);
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 900ms var(--ease-out), transform 1000ms var(--ease-out);
 }
-.js .s4-title {
-  opacity: 0;
-  transform: translate3d(0, 30px, 0);
-  transition: opacity 1400ms var(--ease-out), transform 1400ms var(--ease-out);
-}
-.s4.is-in .s4-copy,
-.s4.is-in .s4-steps,
-.s4.is-in .s4-counter,
-.s4.is-in .s4-cta,
-.s4.is-in .s4-hint,
-.s4.is-in .s4-intro,
-.s4.is-in .s4-title { opacity: 1; transform: none; }
-.s4.is-in.is-scrolled .s4-hint { opacity: 0; }
+.s4.is-bg-in .s4-backdrop,
+.s4.is-text-in .s4-title,
+.s4.is-text-in .s4-copy,
+.s4.is-ui-in .s4-steps,
+.s4.is-ui-in .s4-counter,
+.s4.is-ui-in .s4-cta,
+.s4.is-ui-in .s4-hint,
+.s4.is-in .s4-intro { opacity: 1; transform: none; }
+.s4.is-ui-in.is-scrolled .s4-hint { opacity: 0; }
 
 /* =========================================================
    ESPAÇOS (seção 5)
@@ -1130,29 +1269,55 @@ h1, h2, h3, p { margin: 0; }
   .s4-product { top: 50%; width: min(34%, 64svh); }
 }
 
-/* Tablet e celular: hero empilhada (texto em cima, cenário embaixo) */
+/* Sem espaço à direita do terrário do fundo, a frase lateral sai */
+@media (max-width: 1400px) {
+  .hero-side { display: none; }
+}
+
+/* Tablet e celular: a hero continua ocupando a primeira tela inteira, com o
+   header por cima. Texto em cima; o cenário preenche todo o espaço restante
+   e cresce junto com a tela (até um limite, para o terrário não ficar enorme).
+   Se o texto precisar de mais espaço, a seção cresce. */
 @media (max-width: 1100px) {
-  :root { --hero-h: auto; }
+  :root { --hdr-h: 60px; }
 
   .hero {
     height: auto;
+    min-height: var(--vh);
     display: flex;
     flex-direction: column;
     background: var(--ivory-2);
   }
-  .site-header { order: 1; position: relative; padding: 18px 20px 0 16px; }
-  .hero-content { order: 2; position: relative; left: auto; top: auto; max-width: none; padding: 34px 20px 34px; }
+  .site-header { padding: 18px 20px 0 16px; }
+  .hero-content {
+    order: 2;
+    flex: 1 0 auto;
+    position: relative;
+    left: auto;
+    top: auto;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: calc(var(--hdr-h) + 30px) 20px 30px;
+  }
   .hero-scene {
     order: 3;
     position: relative;
     inset: auto;
-    /* Geometria do fundo (proporção 3:1): o terrário ocupa de 50,25% a 74,5%
-       da largura da imagem, ou seja, 0,7275 × altura, centrado em 1,866 × altura.
-       --bowl-c define onde fica o centro dele na tela. */
-    --scene-h: clamp(380px, 62vw, 560px);
-    --bowl-c: 37vw;
-    height: var(--scene-h);
-    background-position: calc(var(--bowl-c) - var(--scene-h) * 1.866) 50%;
+    --scene-min: clamp(360px, 62vw, 560px);
+    flex: 1000 0 var(--scene-min);
+    min-height: var(--scene-min);
+    max-height: max(var(--scene-min), 92vw);
+    --bowl-c: 37cqw;
+    --img-h: 100cqh;
+  }
+  .hero-scene::before { background-image: url("../assets/fundo - hero.png"); background-size: auto var(--img-h); background-position: var(--bg-x) 50%; }
+  /* a borda superior da imagem se funde ao fundo, sem linha de corte */
+  .hero-scene::before {
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16%);
+            mask-image: linear-gradient(180deg, transparent 0, #000 16%);
   }
 
   .brand-mark { font-size: 42px; }
@@ -1167,8 +1332,8 @@ h1, h2, h3, p { margin: 0; }
   .hero-lead  { font-size: clamp(18px, 4.6vw, 24px); max-width: 30ch; }
 
   /* À direita do terrário do fundo: borda + meia largura de cada vaso + respiro */
-  .hanger--1 { left: calc(var(--bowl-c) + var(--scene-h) * .476 + 26px); top: -6%; height: 58%; }
-  .hanger--2 { left: calc(var(--bowl-c) + var(--scene-h) * .715 + 52px); top: 0;   height: 70%; }
+  .hanger--1 { left: calc(var(--bowl-x) + 47.6cqh + 26px); top: -6%; height: 58%; }
+  .hanger--2 { left: calc(var(--bowl-x) + 71.5cqh + 52px); top: 0;   height: 70%; }
 
   .hero-side { display: none; }
 
@@ -1226,15 +1391,18 @@ h1, h2, h3, p { margin: 0; }
 @media (max-width: 480px) {
   .s5-eyebrow .rule { display: none; }
 }
+@media (max-width: 380px) {
+  .site-nav { font-size: 12px; }
+}
 
 /* Natureza no celular e tablet em retrato: título abaixo do texto,
    etapas em linha acima do rodapé da seção */
 @media (max-width: 760px), (max-width: 1100px) and (orientation: portrait) {
-  .s4 { height: 340vh; }
-  .s4-copy { left: 20px; top: calc(16px + 3svh); }
-  .s4-kicker { font-size: clamp(22px, 6.4vw, 30px); margin-top: 12px; }
-  .s4-title { top: calc(3svh + 110px); translate: -50% 0; font-size: min(23vw, 20svh); }
-  .s4-product { top: 51%; width: min(92vw, 44svh); }
+  .s4 { height: 480vh; }
+  .s4-copy { left: 20px; top: calc(var(--hdr-h) + 18px); }
+  .s4-kicker { font-size: clamp(22px, 6.4vw, 30px); margin-top: 10px; }
+  .s4-title { top: calc(var(--hdr-h) + 104px); translate: -50% 0; font-size: min(21vw, 15svh); }
+  .s4-product { top: 55%; width: min(84vw, 40svh); }
   .s4-orbit { width: min(58%, 104vw); top: 72%; }
   .s4-orbit-dot { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; }
 
@@ -1245,13 +1413,14 @@ h1, h2, h3, p { margin: 0; }
     bottom: calc(84px + 2svh);
     translate: -50% 0;
     flex-direction: row;
-    gap: 22px;
+    align-items: flex-start;
+    gap: clamp(4px, 1.6vw, 18px);
   }
   .s4-steps::before { display: none; }
-  .s4-step { flex-direction: column; gap: 6px; }
+  .s4-step { flex-direction: column; gap: 6px; width: clamp(58px, 17vw, 84px); }
   .s4-step-dot { display: none; }
-  .s4-step-thumb { width: 50px; }
-  .s4-step-label { min-width: 0; font-size: 12px; text-align: center; }
+  .s4-step-thumb { width: clamp(40px, 11vw, 48px); }
+  .s4-step-label { min-width: 0; max-width: none; font-size: 11px; line-height: 1.2; text-align: center; }
 
   .s4-hint { display: none; }
   .s4-counter { left: 20px; bottom: 34px; font-size: 14px; }
@@ -1260,12 +1429,13 @@ h1, h2, h3, p { margin: 0; }
 }
 
 @media (max-width: 560px) {
+  :root { --hdr-h: 104px; }
   .site-header { flex-wrap: wrap; row-gap: 14px; }
   .site-nav { width: 100%; justify-content: space-between; gap: 8px; }
   .nav-leaf { display: none; }
 
   /* Celular: pouco espaço lateral, os vasos pendem à frente da borda do terrário do fundo */
-  .hero-scene { --scene-h: clamp(360px, 100vw, 480px); --bowl-c: 38vw; }
+  .hero-scene { --scene-min: clamp(320px, 88vw, 480px); max-height: max(var(--scene-min), 118vw); --bowl-c: 38cqw; }
   .hanger--1 { left: 64%; height: 52%; }
   .hanger--2 { left: 85%; height: 62%; }
 
@@ -1313,6 +1483,7 @@ h1, h2, h3, p { margin: 0; }
   .s4-float,
   .s4-orbit-dot,
   .s4-mouse::after { animation: none; }
+  .js .s4-backdrop,
   .js .s4-copy,
   .js .s4-steps,
   .js .s4-counter,
@@ -1321,5 +1492,10 @@ h1, h2, h3, p { margin: 0; }
   .js .s4-intro,
   .js .s4-title,
   .js .s5-reveal { transition: none; opacity: 1; transform: none; }
+  /* Composição estável: a seção Natureza tem uma tela só e o terrário
+     fica no centro, sem percurso até a seção seguinte. */
+  .s4 { height: auto; }
+  .s4-frame { position: relative; }
+  .s4-hint { display: none; }
   .essence-media:hover .essence-photo { transform: none; }
 }

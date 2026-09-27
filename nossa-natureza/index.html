@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nossa Natureza — Terrários Jundiaí</title>
+  <meta name="description" content="Terrários Jundiaí: um pequeno mundo para qualquer espaço.">
+  <script>document.documentElement.classList.add("js")</script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 4C10 4 5 8.5 5 15c0 1.6.4 3 1 4 1-4 4-7.5 8-9.5-3.2 2.4-5.5 5.6-6.4 9.3C8.6 19.6 9.8 20 11 20c6.5 0 9-6 8-16Z' fill='%231f2b1f'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="../assets/fundo sessão 4.png">
+  <!-- Os cinco modelos da seção Natureza: pré-carregados para não haver vazios nas trocas -->
+  <link rel="preload" as="image" href="../assets/terrário vertical.png">
+  <link rel="preload" as="image" href="../assets/Terrário aberto.png">
+  <link rel="preload" as="image" href="../assets/Terrário fechado.png">
+  <link rel="preload" as="image" href="../assets/mini terrarios.png">
+  <link rel="preload" as="image" href="../assets/terrário sessão 4.png">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="page-natureza">
+
+  <header class="site-header site-header--overlay">
+    <!-- Identificação textual provisória: não há arquivo de logo na pasta assets -->
+    <a class="brand" href="../index.html" aria-label="Terrários Jundiaí — página inicial">
+      <span class="brand-mark" aria-hidden="true">PD</span>
+      <span class="brand-text">
+        <span class="brand-name">Terrários Jundiaí</span>
+        <span class="brand-sub">por Pedro Dantas</span>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="Principal">
+      <a href="../index.html#colecao">Coleção</a>
+      <a href="../index.html#nossa-essencia">Nossa essência</a>
+      <a href="index.html" class="is-active" aria-current="page">Nossa Natureza</a>
+      <a href="../index.html#contato">Contato</a>
+      <span class="nav-leaf" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M19 4C10 4 5 8.5 5 15c0 1.6.4 3 1 4 1-4 4-7.5 8-9.5-3.2 2.4-5.5 5.6-6.4 9.3C8.6 19.6 9.8 20 11 20c6.5 0 9-6 8-16Z" fill="currentColor"/></svg>
+      </span>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Contêiner compartilhado pelas duas seções: o terrário viaja da
+         seção Natureza até a mesa da seção Espaços sem sair dele. -->
+    <div class="journey">
+
+      <!-- ============ NATUREZA ============
+           A seção é alta; .s4-frame fica fixo (sticky). Um único progresso de
+           scroll controla dois momentos, nesta ordem:
+             1. apresentação dos cinco modelos (um intervalo de scroll para cada);
+             2. descida do último modelo (a esfera) até a mesa da seção Espaços. -->
+      <section class="s4" id="natureza" aria-labelledby="natureza-title">
+        <div class="s4-frame">
+
+          <!-- Fundo recortado ao quadro. .s4-scene tem a proporção do fundo (cover),
+               então pódio, anel e terrário ficam sempre alinhados à imagem. -->
+          <div class="s4-backdrop">
+            <div class="s4-scene s4-scene--bg">
+              <div class="s4-orbit" aria-hidden="true">
+                <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+                  <ellipse cx="500" cy="50" rx="498" ry="48" fill="none" stroke="currentColor" stroke-width="1.1" vector-effect="non-scaling-stroke"/>
+                </svg>
+                <span class="s4-orbit-dot" style="--a: 196deg"></span>
+                <span class="s4-orbit-dot" style="--a: 150deg"></span>
+                <span class="s4-orbit-dot" style="--a: 345deg"></span>
+              </div>
+            </div>
+          </div>
+
+          <h2 class="s4-title" id="natureza-title"><span class="s4-title-inner">Natureza.</span></h2>
+
+          <!-- Mesma geometria do fundo, sem recorte: o terrário pode atravessar a borda da seção. -->
+          <div class="s4-scene s4-scene--fg">
+            <!-- Camadas: posição > entrada (.s4-intro) > percurso no scroll (.s4-travel)
+                 > flutuação (.s4-float) > pulso da troca (.s4-stack) > modelo (.s4-model) -->
+            <div class="s4-product">
+              <div class="s4-intro">
+                <div class="s4-travel">
+                  <div class="s4-float">
+                    <div class="s4-stack">
+                      <!-- Ordem da apresentação. O último (a esfera) é o ÚNICO que segue
+                           para a seção Espaços; não existe outra cópia dele. -->
+                      <img class="s4-model s4-model--vertical" src="../assets/terrário vertical.png" alt="Terrário vertical em cilindro de vidro com musgos, samambaias e tronco" width="1024" height="1536" fetchpriority="high" decoding="async">
+                      <img class="s4-model s4-model--aberto" src="../assets/Terrário aberto.png" alt="Terrário aberto em aquário baixo de vidro com suculentas e tronco" width="1536" height="1024" decoding="async">
+                      <img class="s4-model s4-model--fechado" src="../assets/Terrário fechado.png" alt="Terrário fechado em pote de vidro com tampa de cortiça" width="1145" height="1374" decoding="async">
+                      <img class="s4-model s4-model--mini" src="../assets/mini terrarios.png" alt="Conjunto de três mini terrários de vidro" width="1536" height="1024" decoding="async">
+                      <img class="s4-model s4-model--destaque s4-terrarium" src="../assets/terrário sessão 4.png" alt="Terrário esférico de vidro com samambaia, musgo, tronco e fitônia" width="1254" height="1254" decoding="async">
+                    </div>
+                  </div>
+                  <!-- sombra de contato: só aparece quando o terrário pousa na mesa da seção seguinte -->
+                  <div class="s4-contact" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="s4-copy">
+            <p class="eyebrow s4-eyebrow">Seu próximo pequeno mundo <span class="rule" aria-hidden="true"></span></p>
+            <p class="s4-kicker">Um novo olhar.<br>Em cada ângulo.</p>
+          </div>
+
+          <!-- Modelos: o item ativo acompanha o modelo exibido; o clique rola até o
+               intervalo dele. Um <li> por <img class="s4-model">, na mesma ordem. -->
+          <ol class="s4-steps" aria-label="Modelos de terrário">
+            <li><button type="button" class="s4-step is-active" aria-current="step">
+              <span class="s4-step-dot" aria-hidden="true"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/terrário vertical.png" alt="" decoding="async"></span>
+              <span class="s4-step-label">Terrário vertical</span>
+            </button></li>
+            <li><button type="button" class="s4-step">
+              <span class="s4-step-dot" aria-hidden="true"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/Terrário aberto.png" alt="" decoding="async"></span>
+              <span class="s4-step-label">Terrário aberto</span>
+            </button></li>
+            <li><button type="button" class="s4-step">
+              <span class="s4-step-dot" aria-hidden="true"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/Terrário fechado.png" alt="" decoding="async"></span>
+              <span class="s4-step-label">Terrário fechado</span>
+            </button></li>
+            <li><button type="button" class="s4-step">
+              <span class="s4-step-dot" aria-hidden="true"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/mini terrarios.png" alt="" decoding="async"></span>
+              <span class="s4-step-label">Mini terrários</span>
+            </button></li>
+            <li><button type="button" class="s4-step">
+              <span class="s4-step-dot" aria-hidden="true"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/terrário sessão 4.png" alt="" decoding="async"></span>
+              <span class="s4-step-label">Terrário em destaque</span>
+            </button></li>
+          </ol>
+
+          <p class="s4-counter" aria-hidden="true"><strong class="s4-counter-current">01</strong> / <span class="s4-counter-total">05</span><span class="rule"></span></p>
+
+          <p class="s4-hint" aria-hidden="true"><span class="s4-mouse"></span>Role para explorar</p>
+
+          <a class="btn s4-cta" href="../index.html#colecao">
+            Quero no meu espaço
+            <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ============ ESPAÇOS ============
+           Sem terrário próprio: o terrário que pousa na mesa é o mesmo elemento
+           da seção Natureza, levado até .s5-spot pelo scroll (js/natureza.js).
+           O fundo "fundo seção 5.png" é limpo, sem terrário incorporado. -->
+      <section class="s5" id="espacos" aria-labelledby="s5-title">
+        <div class="s5-backdrop" aria-hidden="true">
+          <div class="s5-scene">
+            <!-- ponto de pouso sobre a mesa (medido pelo JS; não é visível) -->
+            <span class="s5-spot"></span>
+          </div>
+        </div>
+
+        <div class="s5-content">
+          <p class="eyebrow s5-eyebrow s5-reveal" style="--i: 0">Onde a natureza se adapta a você <span class="rule" aria-hidden="true"></span></p>
+          <h2 class="s5-title s5-reveal" style="--i: 1" id="s5-title">Um pequeno mundo.<br>Para qualquer espaço.</h2>
+          <p class="s5-lead s5-reveal" style="--i: 2">Terrários que se integram ao seu ambiente, trazendo mais vida, equilíbrio e bem-estar para o seu dia a dia.</p>
+          <div class="s5-reveal" style="--i: 3">
+            <a class="btn s5-cta" href="../index.html#colecao">
+              Conheça os terrários
+              <svg class="arrow" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26M21 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+            </a>
+          </div>
+          <ul class="s5-spaces s5-reveal" style="--i: 4" aria-label="Ambientes">
+            <li class="is-active">Sala</li>
+            <li>Escritório</li>
+            <li>Quarto</li>
+            <li>Leitura</li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="../js/natureza.js"></script>
+</body>
+</html>

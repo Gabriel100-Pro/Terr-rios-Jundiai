@@ -34,7 +34,7 @@ window.TJ_CONFIG = {
      Preencha SOMENTE com dados confirmados pelo cliente. Campo vazio ("" ou
      null) não aparece no site — nada de texto provisório.
      cidade: confirmada pelo nome da marca (Jundiaí–SP).
-     PENDENTE: regiões, retirada, entrega, horários, Instagram e endereço.
+     PENDENTE: regiões, retirada, entrega, horários e endereço.
      endereco: só um ponto público de atendimento (nunca endereço residencial
      ou aproximado). Com texto E mapa preenchidos, aparece "Como chegar". */
   atendimento: {
@@ -43,7 +43,7 @@ window.TJ_CONFIG = {
     retirada: "",       // ex.: "Retirada combinada no atendimento"
     entrega: "",        // condições de entrega confirmadas
     horarios: "",       // ex.: "Segunda a sábado, das 9h às 18h"
-    instagram: "",      // só o usuário, sem @ (ex.: "terrariosjundiai")
+    instagram: "terrarios_jundiai",  // só o usuário, sem @
     endereco: { texto: "", mapa: "" },
   },
 

@@ -78,8 +78,9 @@
     </div>
 
     <div class="mosaic">
-      <!-- Cada card: fundo | produto (posição > entrada > flutuação > giro) | título -->
-      <article class="card card--vertical">
+      <!-- Cada card: fundo | produto (posição > entrada > flutuação > giro) | título.
+           Clicar no card (ou no botão do título) abre os detalhes do modelo. -->
+      <article class="card card--vertical" data-modelo="vertical">
         <div class="card-bg"></div>
         <div class="product">
           <div class="product-shadow"></div>
@@ -91,10 +92,10 @@
             </div>
           </div>
         </div>
-        <h3 class="card-title">Terrário<br>vertical <span class="card-arrow" aria-hidden="true"></span></h3>
+        <h3 class="card-title"><button type="button" class="card-open" data-modelo="vertical" aria-haspopup="dialog">Terrário<br>vertical <span class="card-arrow" aria-hidden="true"></span></button></h3>
       </article>
 
-      <article class="card card--aberto">
+      <article class="card card--aberto" data-modelo="aberto">
         <div class="card-bg"></div>
         <div class="product">
           <div class="product-shadow"></div>
@@ -106,10 +107,10 @@
             </div>
           </div>
         </div>
-        <h3 class="card-title">Terrário<br>aberto <span class="card-arrow" aria-hidden="true"></span></h3>
+        <h3 class="card-title"><button type="button" class="card-open" data-modelo="aberto" aria-haspopup="dialog">Terrário<br>aberto <span class="card-arrow" aria-hidden="true"></span></button></h3>
       </article>
 
-      <article class="card card--fechado">
+      <article class="card card--fechado" data-modelo="fechado">
         <div class="card-bg"></div>
         <div class="product">
           <div class="product-shadow"></div>
@@ -121,26 +122,22 @@
             </div>
           </div>
         </div>
-        <h3 class="card-title">Terrário<br>fechado <span class="card-arrow" aria-hidden="true"></span></h3>
+        <h3 class="card-title"><button type="button" class="card-open" data-modelo="fechado" aria-haspopup="dialog">Terrário<br>fechado <span class="card-arrow" aria-hidden="true"></span></button></h3>
       </article>
 
-      <article class="card card--mini">
+      <article class="card card--mini" data-modelo="mini">
         <div class="card-bg"></div>
-        <!--
-          PENDENTE: o PNG isolado dos mini terrários não está na pasta assets.
-          Ao adicioná-lo, descomente o bloco abaixo e ajuste o nome do arquivo, width e height:
         <div class="product">
           <div class="product-shadow"></div>
           <div class="product-enter">
             <div class="product-float">
               <div class="product-spin">
-                <img src="assets/NOME-DO-ARQUIVO.png" alt="Conjunto de mini terrários de vidro" width="LARGURA" height="ALTURA" decoding="async">
+                <img src="assets/mini terrarios.png" alt="Conjunto de três mini terrários de vidro: bola, gota e geométrico" width="1536" height="1024" decoding="async">
               </div>
             </div>
           </div>
         </div>
-        -->
-        <h3 class="card-title">Mini<br>terrários <span class="card-arrow" aria-hidden="true"></span></h3>
+        <h3 class="card-title"><button type="button" class="card-open" data-modelo="mini" aria-haspopup="dialog">Mini<br>terrários <span class="card-arrow" aria-hidden="true"></span></button></h3>
       </article>
     </div>
   </section>
@@ -174,11 +171,91 @@
   <!-- ============ INDICADORES ============
        Os valores ficam em UMA configuração: INDICADORES, no início de js/main.js.
        Cada item vira um indicador aqui dentro (número animado + rótulo). -->
-  <section class="stats" aria-labelledby="stats-title">
+  <section class="stats" id="numeros" aria-labelledby="stats-title">
     <h2 class="sr-only" id="stats-title">A Terrários Jundiaí em números</h2>
     <ul class="stats-list" data-stats></ul>
   </section>
 
+  <!-- ============ SELETOR ============
+       Perguntas, opções e regras em js/config.js (TJ_CONFIG.seletor). -->
+  <section class="quiz" id="seletor" aria-labelledby="quiz-title">
+    <div class="quiz-inner">
+      <header class="quiz-head">
+        <p class="eyebrow quiz-eyebrow"><span class="rule" aria-hidden="true"></span>Seletor</p>
+        <h2 class="quiz-title" id="quiz-title">Qual terrário combina com você?</h2>
+      </header>
+      <!-- Preenchido por js/recursos.js -->
+      <div class="quiz-body" data-quiz>
+        <noscript><p class="quiz-note">Ative o JavaScript para usar o seletor.</p></noscript>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALERIA ============
+       Só trabalhos reais (TJ_CONFIG.galeria). Oculta enquanto a lista estiver vazia. -->
+  <section class="gallery" id="trabalhos" aria-labelledby="gallery-title" hidden>
+    <div class="gallery-inner">
+      <h2 class="section-title" id="gallery-title">Pequenos mundos que já criamos</h2>
+      <ul class="gallery-grid" data-gallery></ul>
+    </div>
+  </section>
+
+  <!-- ============ PERGUNTAS FREQUENTES ============
+       Só itens com status "aprovado" (TJ_CONFIG.faq). Oculta se não houver nenhum. -->
+  <section class="faq" id="perguntas" aria-labelledby="faq-title" hidden>
+    <div class="faq-inner">
+      <h2 class="section-title" id="faq-title">Perguntas frequentes</h2>
+      <div class="faq-list" data-faq></div>
+    </div>
+  </section>
+
+  <!-- ============ CONTATO ============ -->
+  <section class="contact" id="contato" aria-labelledby="contact-title">
+    <div class="contact-inner">
+      <p class="eyebrow contact-eyebrow"><span class="rule" aria-hidden="true"></span>Contato</p>
+      <h2 class="contact-title" id="contact-title">Vamos criar o seu<br>pequeno mundo?</h2>
+      <p class="contact-lead">Conte onde você imagina o seu terrário e a gente ajuda a escolher.</p>
+      <!-- Link de WhatsApp gerado por js/recursos.js (ou aviso de "em breve") -->
+      <div class="contact-cta" data-whatsapp="geral" data-whatsapp-label="Conversar pelo WhatsApp"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="brand footer-brand" href="#inicio" aria-label="Terrários Jundiaí — voltar ao início">
+        <span class="brand-mark" aria-hidden="true">PD</span>
+        <span class="brand-text">
+          <span class="brand-name">Terrários Jundiaí</span>
+          <span class="brand-sub">por Pedro Dantas</span>
+        </span>
+      </a>
+      <nav class="footer-nav" aria-label="Rodapé">
+        <a href="#colecao">Coleção</a>
+        <a href="#nossa-essencia">Nossa essência</a>
+        <a href="nossa-natureza/index.html">Nossa Natureza</a>
+        <a href="#seletor">Seletor</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <p class="footer-copy">Terrários Jundiaí · Natureza em miniatura</p>
+    </div>
+  </footer>
+
+  <!-- ============ JANELAS ============ -->
+  <dialog class="modal" id="modelo-dialog" aria-labelledby="modelo-dialog-title">
+    <div class="modal-box" data-modelo-content></div>
+  </dialog>
+
+  <dialog class="lightbox" id="galeria-dialog" aria-label="Foto ampliada">
+    <div class="lightbox-box" data-lightbox-content></div>
+  </dialog>
+
+  <!-- Aparece só com um número de WhatsApp configurado -->
+  <a class="wa-float" data-whatsapp-float hidden target="_blank" rel="noopener" aria-label="Conversar pelo WhatsApp">
+    <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.7c-2 0-4-.5-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7Zm5.9-8c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.1.9 2.9 1 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5 0-.2-.3-.3-.6-.4Z"/></svg>
+  </a>
+
+  <script src="js/config.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/recursos.js"></script>
 </body>
 </html>

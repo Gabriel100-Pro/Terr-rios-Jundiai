@@ -59,12 +59,11 @@ window.TJ_CONFIG = {
 
   /* ---------- WhatsApp ----------
      numero: só dígitos, com país e DDD (ex.: "5511912345678").
-     PENDENTE: nenhum número confirmado no projeto. Enquanto estiver vazio,
-     o site não gera links: os botões mostram "Contato disponível em breve"
-     e o botão flutuante não aparece.
+     Se ficar vazio, o site não gera links: os botões mostram
+     "Contato disponível em breve" e o botão flutuante não aparece.
      Nas mensagens, {modelo}, {ambiente} e {espaco} são substituídos. */
   whatsapp: {
-    numero: "",
+    numero: "5511978661410",
     mensagens: {
       geral: "Olá! Conheci o site da Terrários Jundiaí e gostaria de saber mais.",
       modelo: "Olá! Gostaria de saber mais sobre o modelo: {modelo}.",

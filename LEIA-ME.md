@@ -24,8 +24,8 @@ Os indicadores (números) ficam no início de `js/main.js`.
    `node ferramentas/aplicar-metadados.mjs`. O script regrava título, descrição, Open Graph,
    `canonical` e a imagem de compartilhamento (URL absoluta) nas duas páginas. Ele recusa
    `localhost` e endereços sem https.
-2. **WhatsApp**: preencha `TJ_CONFIG.whatsapp.numero` (só dígitos, com 55 e DDD). Sem ele, o
-   formulário de encomenda fica desativado e o botão flutuante não aparece.
+2. **WhatsApp**: configurado em `TJ_CONFIG.whatsapp.numero` (só dígitos, com 55 e DDD). Se for
+   apagado, o formulário de encomenda fica desativado e o botão flutuante não aparece.
 3. **Atendimento**: preencha somente os dados confirmados.
 4. **Indicadores**: substitua os valores ilustrativos em `js/main.js` e marque `ilustrativo: false`.
 5. No servidor, ative a compressão (gzip/brotli) e o cache longo para `assets/web/`.

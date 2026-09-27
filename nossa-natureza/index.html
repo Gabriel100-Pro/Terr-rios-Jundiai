@@ -3,27 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nossa Natureza — Terrários Jundiaí</title>
-  <meta name="description" content="Terrários Jundiaí: um pequeno mundo para qualquer espaço.">
+  <!-- METADADOS:INICIO (gerado por ferramentas/aplicar-metadados.mjs a partir de js/config.js) -->
+  <title>Nossa Natureza | Terrários Jundiaí</title>
+  <meta name="description" content="Conheça nossos terrários e encontre um pequeno universo de natureza para o seu espaço.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Terrários Jundiaí">
+  <meta property="og:title" content="Nossa Natureza | Terrários Jundiaí">
+  <meta property="og:description" content="Conheça nossos terrários e encontre um pequeno universo de natureza para o seu espaço.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nossa Natureza | Terrários Jundiaí">
+  <meta name="twitter:description" content="Conheça nossos terrários e encontre um pequeno universo de natureza para o seu espaço.">
+  <!-- PENDENTE: defina TJ_CONFIG.site.dominio e rode o script para publicar og:url, canonical e a imagem de compartilhamento (URLs absolutas). -->
+  <!-- METADADOS:FIM -->
+  <meta name="theme-color" content="#f1ebdf">
   <script>document.documentElement.classList.add("js")</script>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 4C10 4 5 8.5 5 15c0 1.6.4 3 1 4 1-4 4-7.5 8-9.5-3.2 2.4-5.5 5.6-6.4 9.3C8.6 19.6 9.8 20 11 20c6.5 0 9-6 8-16Z' fill='%231f2b1f'/%3E%3C/svg%3E">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="../assets/fundo sessão 4.png">
-  <!-- Os cinco modelos da seção Natureza: pré-carregados para não haver vazios nas trocas -->
-  <link rel="preload" as="image" href="../assets/terrário vertical.png">
-  <link rel="preload" as="image" href="../assets/Terrário aberto.png">
-  <link rel="preload" as="image" href="../assets/Terrário fechado.png">
-  <link rel="preload" as="image" href="../assets/mini terrarios.png">
-  <link rel="preload" as="image" href="../assets/terrário sessão 4.png">
+  <!-- Primeira tela: fundo (CSS) e o primeiro modelo têm prioridade. Os
+       demais modelos carregam logo em seguida, em prioridade normal, e são
+       decodificados antes das trocas (js/natureza.js). -->
+  <link rel="preload" as="image" href="../assets/web/fundo-natureza.webp" type="image/webp" fetchpriority="high">
   <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body class="page-natureza">
+  <a class="skip-link" href="#natureza">Pular para o conteúdo</a>
 
   <header class="site-header site-header--overlay">
     <!-- Identificação textual provisória: não há arquivo de logo na pasta assets -->
-    <a class="brand" href="../index.html" aria-label="Terrários Jundiaí — página inicial">
+    <a class="brand" href="../index.html" aria-label="Terrários Jundiaí por Pedro Dantas — página inicial">
       <span class="brand-mark" aria-hidden="true">PD</span>
       <span class="brand-text">
         <span class="brand-name">Terrários Jundiaí</span>
@@ -69,7 +79,7 @@
             </div>
           </div>
 
-          <h2 class="s4-title" id="natureza-title"><span class="s4-title-inner">Natureza.</span></h2>
+          <h1 class="s4-title" id="natureza-title"><span class="s4-title-inner">Natureza.</span></h1>
 
           <!-- Mesma geometria do fundo, sem recorte: o terrário pode atravessar a borda da seção. -->
           <div class="s4-scene s4-scene--fg">
@@ -82,11 +92,11 @@
                     <div class="s4-stack">
                       <!-- Ordem da apresentação. O último (a esfera) é o ÚNICO que segue
                            para a seção Espaços; não existe outra cópia dele. -->
-                      <img class="s4-model s4-model--vertical" src="../assets/terrário vertical.png" alt="Terrário vertical em cilindro de vidro com musgos, samambaias e tronco" width="1024" height="1536" fetchpriority="high" decoding="async">
-                      <img class="s4-model s4-model--aberto" src="../assets/Terrário aberto.png" alt="Terrário aberto em aquário baixo de vidro com suculentas e tronco" width="1536" height="1024" decoding="async">
-                      <img class="s4-model s4-model--fechado" src="../assets/Terrário fechado.png" alt="Terrário fechado em pote de vidro com tampa de cortiça" width="1145" height="1374" decoding="async">
-                      <img class="s4-model s4-model--mini" src="../assets/mini terrarios.png" alt="Conjunto de três mini terrários de vidro" width="1536" height="1024" decoding="async">
-                      <img class="s4-model s4-model--destaque s4-terrarium" src="../assets/terrário sessão 4.png" alt="Terrário esférico de vidro com samambaia, musgo, tronco e fitônia" width="1254" height="1254" decoding="async">
+                      <img class="s4-model s4-model--vertical" src="../assets/web/terrario-vertical-800.webp" srcset="../assets/web/terrario-vertical-480.webp 480w, ../assets/web/terrario-vertical-800.webp 800w, ../assets/web/terrario-vertical.webp 1024w" sizes="(max-width: 760px) 50vw, 24vw" alt="Terrário vertical em cilindro de vidro com musgos, samambaias e tronco" width="1024" height="1536" fetchpriority="high" decoding="async">
+                      <img class="s4-model s4-model--aberto" src="../assets/web/terrario-aberto-800.webp" srcset="../assets/web/terrario-aberto-480.webp 480w, ../assets/web/terrario-aberto-800.webp 800w, ../assets/web/terrario-aberto.webp 1536w" sizes="(max-width: 760px) 88vw, 40vw" alt="Terrário aberto em aquário baixo de vidro com suculentas e tronco" width="1536" height="1024" decoding="async">
+                      <img class="s4-model s4-model--fechado" src="../assets/web/terrario-fechado-800.webp" srcset="../assets/web/terrario-fechado-480.webp 480w, ../assets/web/terrario-fechado-800.webp 800w, ../assets/web/terrario-fechado.webp 1145w" sizes="(max-width: 760px) 61vw, 28vw" alt="Terrário fechado em pote de vidro com tampa de cortiça" width="1145" height="1374" decoding="async">
+                      <img class="s4-model s4-model--mini" src="../assets/web/mini-terrarios-800.webp" srcset="../assets/web/mini-terrarios-480.webp 480w, ../assets/web/mini-terrarios-800.webp 800w, ../assets/web/mini-terrarios.webp 1536w" sizes="(max-width: 760px) 90vw, 41vw" alt="Conjunto de três mini terrários de vidro" width="1536" height="1024" decoding="async">
+                      <img class="s4-model s4-model--destaque s4-terrarium" src="../assets/web/terrario-esfera-640.webp" srcset="../assets/web/terrario-esfera-640.webp 640w, ../assets/web/terrario-esfera.webp 1254w" sizes="(max-width: 760px) 84vw, 40vw" alt="Terrário esférico de vidro com samambaia, musgo, tronco e fitônia" width="1254" height="1254" decoding="async">
                     </div>
                   </div>
                   <!-- sombra de contato: só aparece quando o terrário pousa na mesa da seção seguinte -->
@@ -106,27 +116,27 @@
           <ol class="s4-steps" aria-label="Modelos de terrário">
             <li><button type="button" class="s4-step is-active" aria-current="step">
               <span class="s4-step-dot" aria-hidden="true"></span>
-              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/terrário vertical.png" alt="" decoding="async"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/web/terrario-vertical-128.webp" alt="" width="128" height="192" decoding="async"></span>
               <span class="s4-step-label">Terrário vertical</span>
             </button></li>
             <li><button type="button" class="s4-step">
               <span class="s4-step-dot" aria-hidden="true"></span>
-              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/Terrário aberto.png" alt="" decoding="async"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/web/terrario-aberto-128.webp" alt="" width="128" height="85" decoding="async"></span>
               <span class="s4-step-label">Terrário aberto</span>
             </button></li>
             <li><button type="button" class="s4-step">
               <span class="s4-step-dot" aria-hidden="true"></span>
-              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/Terrário fechado.png" alt="" decoding="async"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/web/terrario-fechado-128.webp" alt="" width="128" height="154" decoding="async"></span>
               <span class="s4-step-label">Terrário fechado</span>
             </button></li>
             <li><button type="button" class="s4-step">
               <span class="s4-step-dot" aria-hidden="true"></span>
-              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/mini terrarios.png" alt="" decoding="async"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/web/mini-terrarios-128.webp" alt="" width="128" height="85" decoding="async"></span>
               <span class="s4-step-label">Mini terrários</span>
             </button></li>
             <li><button type="button" class="s4-step">
               <span class="s4-step-dot" aria-hidden="true"></span>
-              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/terrário sessão 4.png" alt="" decoding="async"></span>
+              <span class="s4-step-thumb" aria-hidden="true"><img src="../assets/web/terrario-esfera-128.webp" alt="" width="128" height="128" decoding="async"></span>
               <span class="s4-step-label">Terrário em destaque</span>
             </button></li>
           </ol>
@@ -175,6 +185,26 @@
 
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="brand footer-brand" href="../index.html" aria-label="Terrários Jundiaí por Pedro Dantas — página inicial">
+        <span class="brand-mark" aria-hidden="true">PD</span>
+        <span class="brand-text">
+          <span class="brand-name">Terrários Jundiaí</span>
+          <span class="brand-sub">por Pedro Dantas</span>
+        </span>
+      </a>
+      <nav class="footer-nav" aria-label="Rodapé">
+        <a href="../index.html#colecao">Coleção</a>
+        <a href="../index.html#nossa-essencia">Nossa essência</a>
+        <a href="index.html" aria-current="page">Nossa Natureza</a>
+        <a href="../index.html#seletor">Seletor</a>
+        <a href="../index.html#contato">Contato</a>
+      </nav>
+      <p class="footer-copy">Terrários Jundiaí · Natureza em miniatura</p>
+    </div>
+  </footer>
 
   <script src="../js/natureza.js"></script>
 </body>

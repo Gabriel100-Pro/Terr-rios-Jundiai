@@ -5,6 +5,58 @@
    ========================================================= */
 window.TJ_CONFIG = {
 
+  /* ---------- Endereço do site e prévia de compartilhamento ----------
+     dominio: endereço definitivo, com https e sem barra final
+              (ex.: "https://www.seudominio.com.br"). Nunca localhost.
+     PENDENTE: domínio ainda não definido. Enquanto estiver vazio, as páginas
+     não publicam og:url, canonical nem og:image (que exigem URL absoluta).
+     Depois de preencher, rode:  node ferramentas/aplicar-metadados.mjs
+     O script regrava o bloco de metadados das duas páginas a partir daqui. */
+  site: {
+    dominio: "",
+    nome: "Terrários Jundiaí",
+    imagem: { caminho: "assets/compartilhamento/capa.jpg", width: 1200, height: 630, tipo: "image/jpeg", alt: "Terrário de vidro com samambaias, fitônias e musgo sobre uma pedra, diante de uma parede verde" },
+    paginas: {
+      "index.html": {
+        caminho: "/",
+        titulo: "Terrários Jundiaí | Natureza em miniatura",
+        descricao: "Conheça nossos terrários e encontre um pequeno universo de natureza para o seu espaço.",
+      },
+      "nossa-natureza/index.html": {
+        caminho: "/nossa-natureza/",
+        titulo: "Nossa Natureza | Terrários Jundiaí",
+        descricao: "Conheça nossos terrários e encontre um pequeno universo de natureza para o seu espaço.",
+      },
+    },
+  },
+
+  /* ---------- Atendimento (área compacta no contato) ----------
+     Preencha SOMENTE com dados confirmados pelo cliente. Campo vazio ("" ou
+     null) não aparece no site — nada de texto provisório.
+     cidade: confirmada pelo nome da marca (Jundiaí–SP).
+     PENDENTE: regiões, retirada, entrega, horários, Instagram e endereço.
+     endereco: só um ponto público de atendimento (nunca endereço residencial
+     ou aproximado). Com texto E mapa preenchidos, aparece "Como chegar". */
+  atendimento: {
+    cidade: "Jundiaí–SP",
+    regioes: "",        // ex.: "Jundiaí e cidades vizinhas" — só se confirmado
+    retirada: "",       // ex.: "Retirada combinada no atendimento"
+    entrega: "",        // condições de entrega confirmadas
+    horarios: "",       // ex.: "Segunda a sábado, das 9h às 18h"
+    instagram: "",      // só o usuário, sem @ (ex.: "terrariosjundiai")
+    endereco: { texto: "", mapa: "" },
+  },
+
+  /* ---------- Encomenda personalizada (formulário no contato) ----------
+     Os tamanhos são preferências de conversa, não medidas nem estoque. */
+  encomenda: {
+    modelos: ["Vertical", "Aberto", "Fechado", "Mini terrários", "Preciso de orientação"],
+    tamanhos: ["Pequeno", "Médio", "Peça de destaque", "Quero orientação"],
+    finalidades: ["Para mim", "Presente", "Decoração de ambiente"],
+    abertura: "Olá! Gostaria de conversar sobre uma encomenda.",
+    aviso: "Disponibilidade, prazo e valor serão confirmados no atendimento.",
+  },
+
   /* ---------- WhatsApp ----------
      numero: só dígitos, com país e DDD (ex.: "5511912345678").
      PENDENTE: nenhum número confirmado no projeto. Enquanto estiver vazio,
@@ -29,7 +81,7 @@ window.TJ_CONFIG = {
   modelos: {
     vertical: {
       nome: "Terrário vertical",
-      foto: { src: "assets/terrário vertical.png", alt: "Terrário vertical em cilindro de vidro com musgos, samambaias e tronco", width: 1024, height: 1536 },
+      foto: { src: "assets/web/terrario-vertical-800.webp", alt: "Terrário vertical em cilindro de vidro com musgos, samambaias e tronco", width: 800, height: 1200 },
       fotosExtras: [],
       descricao: "Cilindro de vidro alto, com musgos, samambaias e um tronco compondo a paisagem em camadas.",
       dimensoes: null,
@@ -38,7 +90,7 @@ window.TJ_CONFIG = {
     },
     aberto: {
       nome: "Terrário aberto",
-      foto: { src: "assets/Terrário aberto.png", alt: "Terrário aberto em aquário baixo de vidro com suculentas e tronco", width: 1536, height: 1024 },
+      foto: { src: "assets/web/terrario-aberto-800.webp", alt: "Terrário aberto em aquário baixo de vidro com suculentas e tronco", width: 800, height: 533 },
       fotosExtras: [],
       descricao: "Aquário baixo de vidro, sem tampa, com suculentas, pedras e tronco à vista.",
       dimensoes: null,
@@ -47,7 +99,7 @@ window.TJ_CONFIG = {
     },
     fechado: {
       nome: "Terrário fechado",
-      foto: { src: "assets/Terrário fechado.png", alt: "Terrário fechado em pote de vidro com tampa de cortiça", width: 1145, height: 1374 },
+      foto: { src: "assets/web/terrario-fechado-800.webp", alt: "Terrário fechado em pote de vidro com tampa de cortiça", width: 800, height: 960 },
       fotosExtras: [],
       descricao: "Pote de vidro com tampa de cortiça, com samambaia, musgo e pedras em um pequeno ecossistema.",
       dimensoes: null,
@@ -56,7 +108,7 @@ window.TJ_CONFIG = {
     },
     mini: {
       nome: "Mini terrários",
-      foto: { src: "assets/mini terrarios.png", alt: "Conjunto de três mini terrários de vidro: bola, gota e geométrico", width: 1536, height: 1024 },
+      foto: { src: "assets/web/mini-terrarios-800.webp", alt: "Conjunto de três mini terrários de vidro: bola, gota e geométrico", width: 800, height: 533 },
       fotosExtras: [],
       descricao: "Pequenas composições em vidro nos formatos bola, gota e geométrico com estrutura metálica.",
       dimensoes: null,
@@ -138,10 +190,22 @@ window.TJ_CONFIG = {
   /* ---------- Galeria "Pequenos mundos que já criamos" ----------
      SOMENTE fotos de trabalhos reais do Pedro (ou fornecidas pelo cliente
      para esse fim). As imagens de conceito do site NÃO entram aqui.
-     Item: { src, alt, width, height, legenda } — legenda só com informação
-     confirmada (ou deixe ""). Com a lista vazia, a seção fica oculta.
+     Item: { src, alt, width, height, legenda, trabalhoReal: true }.
+     Sem trabalhoReal: true o item NÃO aparece (proteção contra imagens de
+     conceito/IA). legenda só com informação confirmada (ou "").
+     Com a lista vazia, a seção fica oculta.
      PENDENTE: nenhuma foto real no projeto. */
   galeria: [],
+
+  /* ---------- Depoimentos ----------
+     Só depoimentos reais, com o texto exatamente como aprovado.
+     Item: { texto, nome, nomeAutorizado, foto, fotoAutorizada, status }
+       status "aprovado" = publicado; qualquer outro valor fica oculto.
+       nome só aparece com nomeAutorizado: true (senão: "Cliente").
+       foto (caminho da imagem) só aparece com fotoAutorizada: true.
+     Sem estrelas nem notas. Sem itens aprovados, a seção fica oculta.
+     PENDENTE: nenhum depoimento fornecido. */
+  depoimentos: [],
 
   /* ---------- Perguntas frequentes ----------
      status "aprovado" = publicado; qualquer outro valor fica oculto.

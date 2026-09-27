@@ -93,7 +93,7 @@
 
   const swayFrame = (now) => {
     swayRaf = 0;
-    if (!swayVisible || reduceMotion.matches) return;
+    if (!swayVisible || document.hidden || reduceMotion.matches) return;
     for (const h of hangers) {
       if (h.start === null) continue;
       const t = now - h.start;
@@ -115,6 +115,11 @@
     }).observe(hero);
   }
   startSway();
+  // Aba oculta: o loop para; ao voltar, retoma na fase certa (depende só do tempo).
+  document.addEventListener("visibilitychange", () => {
+    document.documentElement.classList.toggle("is-tab-hidden", document.hidden);
+    if (!document.hidden) startSway();
+  });
   reduceMotion.addEventListener?.("change", () => {
     if (reduceMotion.matches) hangers.forEach((h) => (h.sway.style.transform = ""));
     else startSway();
@@ -185,6 +190,11 @@
         { threshold: 0, rootMargin: "0px 0px -22% 0px" }
       );
       io.observe(collection);
+
+      // Flutuações só rodam com a coleção na tela (pausadas fora dela).
+      new IntersectionObserver(([entry]) => {
+        collection.classList.toggle("is-offscreen", !entry.isIntersecting);
+      }).observe(collection);
     }
   }
 

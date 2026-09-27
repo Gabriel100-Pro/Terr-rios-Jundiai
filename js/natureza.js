@@ -162,9 +162,16 @@
     if (counterCurrent) counterCurrent.textContent = pad(step + 1);
   };
 
+  // Medidas de cada quadro, lidas ANTES de qualquer escrita de estilo
+  // (evita layout forçado no meio do render).
+  let spotRect = null;
+  let contentRect = null;
+
   const readTarget = () => {
     const r = s4.getBoundingClientRect();
     frameTop = frame.getBoundingClientRect().top;
+    spotRect = spot ? spot.getBoundingClientRect() : null;
+    contentRect = s5Content ? s5Content.getBoundingClientRect() : null;
     const p = clamp01(-r.top / scrollable);
     // Passagem: 0 quando o quadro se solta, 1 quando a seção Espaços ocupa a tela.
     const h = s5 ? clamp01((frameH - r.bottom) / frameH) : 0;
@@ -224,14 +231,14 @@
     let landed = 0;
 
     // Passagem: do ponto final da descida até a mesa da seção Espaços.
-    if (h > 0 && spot) {
+    if (h > 0 && spotRect) {
       const k = smooth(0, 1, h);
-      const sr = spot.getBoundingClientRect();
+      const sr = spotRect;
       let landScale = sr.width / (SPHERE_VISIBLE_W * baseW);
       // Texto empilhado acima da mesa (celular/tablet em retrato): a esfera
       // encolhe o necessário para caber entre o texto e o tampo.
-      if (s5Content) {
-        const cr = s5Content.getBoundingClientRect();
+      if (contentRect) {
+        const cr = contentRect;
         if (cr.right > sr.left + 8) {
           const free = sr.top - (cr.bottom + 18);
           landScale = Math.min(landScale, Math.max(0.25, free / (SPHERE_VISIBLE_H * baseW)));
@@ -276,11 +283,16 @@
     lastTime = now;
     // Suavização independente da taxa de quadros (~140 ms de constante de tempo).
     const k = reduceMotion.matches ? 1 : 1 - Math.exp(-dt / 140);
+    // Salto grande (âncora, restauração do navegador, retorno de longe):
+    // assume direto o estado da posição, sem atravessar outros modelos.
+    // Rolagem normal nunca anda tanto entre dois quadros.
+    if (Math.abs(target - current) > 0.3) current = target;
     current += (target - current) * k;
     if (Math.abs(target - current) < 0.0002) current = target;
     render(current);
-    // Fora de vista, só para depois de assentar (o pouso nunca fica pela metade).
-    if (!inView && current === target) running = false;
+    // Para assim que assenta (o pouso nunca fica pela metade); o próximo
+    // scroll, resize ou volta à seção retoma o loop.
+    if (current === target) running = false;
     if (running) requestAnimationFrame(tick);
   };
 
@@ -295,9 +307,12 @@
 
   refresh();
   window.addEventListener("resize", refresh);
+  // Único listener de scroll da página: só acorda o loop (passivo).
+  window.addEventListener("scroll", () => { if (inView) start(); }, { passive: true });
   models.forEach((img) => img.addEventListener("load", refresh, { once: true }));
   document.fonts?.ready.then(refresh);
   reduceMotion.addEventListener?.("change", refresh);
+  document.addEventListener("visibilitychange", () => s4.classList.toggle("is-tab-hidden", document.hidden));
 
   if ("IntersectionObserver" in window) {
     // Loop ativo apenas com a seção Natureza ou a Espaços por perto.
@@ -305,7 +320,17 @@
     const nearIo = new IntersectionObserver(
       (entries) => {
         entries.forEach((en) => (en.isIntersecting ? near.add(en.target) : near.delete(en.target)));
+        const was = inView;
         inView = near.size > 0;
+        // Loops CSS (flutuação, órbita) só rodam com a seção por perto.
+        s4.classList.toggle("is-paused", !inView);
+        if (inView && !was) {
+          // Voltando de longe (âncora, topo/fim da página): assume direto o
+          // estado da posição atual — sem atravessar modelos nem saltos.
+          readTarget();
+          current = target;
+          render(current);
+        }
         if (inView) start();
       },
       { rootMargin: "20% 0px 60% 0px" }
